@@ -1,5 +1,4 @@
 import "react-datepicker/dist/react-datepicker.css";
-import ShortUniqueId from "short-unique-id";
 
 import React, { Fragment, useState } from "react";
 
@@ -8,7 +7,6 @@ import DatePicker from "react-datepicker";
 import ItemsForm from "./ItemsForm";
 import styled from "styled-components";
 import { useForm } from "@mantine/form";
-const uid = new ShortUniqueId({ length: 4 });
 
 const Container = styled.div`
   height: 100%;
@@ -84,11 +82,19 @@ const BillText = styled.h5`
 const CustomInput = styled.div`
   background-color: ${({ theme }) => theme.colors.bgInput};
   border: 1px solid ${({ theme }) => theme.colors.bgInputBorder};
+<<<<<<< HEAD
+=======
+  width: 200%;
+>>>>>>> parent of 8dc78ef (added: items list)
   padding: 13px 10px 13px 17px;
   border-radius: 5px;
   font-size: 1.1rem;
   color: ${({ theme }) => theme.colors.textPrimary};
   font-weight: bold;
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 8dc78ef (added: items list)
   display: flex;
   cursor: pointer;
   justify-content: space-between;
@@ -143,8 +149,14 @@ const Form = () => {
     },
   });
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([{
+    name: "nameValue",
+    quantity: 12,
+    price: 12,
+  }]);
 
+console.log(items)
+  
   return (
     <Container>
       <Title>New Invoice</Title>
@@ -232,21 +244,15 @@ const Form = () => {
         <ItemsSection>
           <StyledItemsLabel>Item List</StyledItemsLabel>
           <div>
-            {items.map((item) => (
-              <ItemsForm key={item.id} items={items} setItems={setItems} {...item} />
+            {items.map((data, i) => (
+              <ItemsForm id={i} key={i} data={data} items={items} setItems={setItems} />
             ))}
           </div>
           <AddItemButton
             onClick={() =>
               setItems((prev) => [
                 ...prev,
-                {
-                  name: "",
-                  quantity: 0,
-                  price: 0,
-                  total: 0,
-                  id: uid(),
-                },
+                {}
               ])
             }
             type="button"
