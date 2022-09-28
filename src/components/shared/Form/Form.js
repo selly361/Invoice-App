@@ -83,6 +83,10 @@ const CustomInput = styled.div`
   background-color: ${({ theme }) => theme.colors.bgInput};
   border: 1px solid ${({ theme }) => theme.colors.bgInputBorder};
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  width: 200%;
+>>>>>>> parent of 8dc78ef (added: items list)
 =======
   width: 200%;
 >>>>>>> parent of 8dc78ef (added: items list)
@@ -92,6 +96,10 @@ const CustomInput = styled.div`
   color: ${({ theme }) => theme.colors.textPrimary};
   font-weight: bold;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 8dc78ef (added: items list)
 =======
 
 >>>>>>> parent of 8dc78ef (added: items list)
