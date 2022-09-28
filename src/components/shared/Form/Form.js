@@ -51,6 +51,7 @@ const InputField = styled.fieldset`
   display: flex;
   gap: 0.7rem;
   flex-flow: column;
+
 `;
 
 const SenderAddressSection = styled.section`
@@ -63,12 +64,15 @@ const InputsField = styled.fieldset`
   display: flex;
   gap: 1rem;
   width: 100%;
+
 `;
 
 const DatesField = styled.fieldset`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
 `;
 
 const ClientAddressSection = styled(SenderAddressSection)``;
@@ -80,16 +84,14 @@ const BillText = styled.h5`
 const CustomInput = styled.div`
   background-color: ${({ theme }) => theme.colors.bgInput};
   border: 1px solid ${({ theme }) => theme.colors.bgInputBorder};
-  width: 100%;
   padding: 13px 10px 13px 17px;
   border-radius: 5px;
   font-size: 1.1rem;
   color: ${({ theme }) => theme.colors.textPrimary};
   font-weight: bold;
-  width: 50%;
   display: flex;
-  justify-content: space-between;
   cursor: pointer;
+  justify-content: space-between;
 `;
 
 const ItemsSection = styled.section`
