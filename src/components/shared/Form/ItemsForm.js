@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
+import ShortUniqueId from 'short-unique-id';
 
+const uid = new ShortUniqueId({ length: 4 })
 import { DeleteIcon } from "../../../assets/icons";
 import styled from "styled-components";
 
@@ -49,7 +51,7 @@ const InputField = styled.fieldset`
   flex-flow: column;
 `;
 
-const ItemsForm = ({ data, items, setItems, id }) => {
+const ItemsForm = ({ data, items, setItems }) => {
   const [nameValue, setNameValue] = useState(data.name || "");
   const [quantityValue, setQuantityValue] = useState(data.quantity || 1);
   const [priceValue, setPriceValue] = useState(data.price || 0);
@@ -61,12 +63,13 @@ const ItemsForm = ({ data, items, setItems, id }) => {
       quantity: quantityValue,
       price: priceValue,
       total: priceValue * quantityValue,
+      id: uid()
     };
     setItems(copy);
   }
 
   const handleDelete = () => {
-    setItems(items.filter((item, index) => index - 1 !== id - 1))
+    setItems(items.filter((item) => item.id !== items.at(-1).id))
   };
 
   return (

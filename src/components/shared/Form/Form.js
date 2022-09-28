@@ -1,5 +1,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 
+
 import React, { Fragment, useState } from "react";
 
 import { CalenderIcon } from "../../../assets/icons";
@@ -139,13 +140,8 @@ const Form = () => {
     },
   });
 
-  const [items, setItems] = useState([{
-    name: "nameValue",
-    quantity: 12,
-    price: 12,
-  }]);
+  const [items, setItems] = useState([]);
 
-console.log(items)
   
   return (
     <Container>
@@ -235,14 +231,16 @@ console.log(items)
           <StyledItemsLabel>Item List</StyledItemsLabel>
           <div>
             {items.map((data, i) => (
-              <ItemsForm id={i} key={i} data={data} items={items} setItems={setItems} />
+              <ItemsForm key={i} data={data} items={items} setItems={setItems} />
             ))}
           </div>
           <AddItemButton
             onClick={() =>
               setItems((prev) => [
                 ...prev,
-                {}
+                {
+                  id: uid()
+                }
               ])
             }
             type="button"

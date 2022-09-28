@@ -1,6 +1,6 @@
 import { GlobalStyle, dark, light } from "../../global-styles/global";
 import styled, { ThemeProvider } from "styled-components";
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { AnimatePresence } from "framer-motion";
 import FormWrapper from "../shared/Form/FormWrapper";
