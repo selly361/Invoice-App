@@ -13,6 +13,7 @@ const StyledNavbar = styled.header`
   display: flex;
   justify-content: space-between;
   padding-right: 2rem;
+  z-index: 40;
 `;
 const LogoWrapper = styled.div`
   position: relative;
