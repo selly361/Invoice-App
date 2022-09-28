@@ -11,10 +11,15 @@ let defaultInput = styled.input`
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.textPrimary};
   font-weight: bold;
+  margin: 1rem 0;
 `;
 
 const ItemName = styled(defaultInput)`
-  width: 180px;
+  width: 120px;
+`;
+
+const MobileItemName = styled(defaultInput)`
+  width: 100%;
 `;
 
 const ItemQuantity = styled(defaultInput)`
@@ -22,78 +27,106 @@ const ItemQuantity = styled(defaultInput)`
 `;
 
 const ItemPrice = styled(defaultInput)`
-  width: 100px;
+  width: 70px;
   overflow-x: auto;
 `;
 
 const ItemTotal = styled.h5`
   color: ${({ theme }) => theme.colors.textPrimary};
-  width: 170px;
+  width: 120px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 13px 0;
+
+  p {
+    overflow-x: scroll;
+    width: 60px;
+  }
 `;
 
 const ItemsField = styled.fieldset`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.colors.textSecondary};
+  margin: .4rem 0;
 `;
 
 const InputField = styled.fieldset`
   display: flex;
   gap: 0.7rem;
   flex-flow: column;
-`;
+  align-items: start;
 
-const ItemsForm = ({ data, items, setItems, id }) => {
-  const [nameValue, setNameValue] = useState(data.name || "");
-  const [quantityValue, setQuantityValue] = useState(data.quantity || 1);
-  const [priceValue, setPriceValue] = useState(data.price || 0);
-
-  if (!data.length) {
-    let copy = items;
-    copy[copy.length - 1] = {
-      name: nameValue,
-      quantity: quantityValue,
-      price: priceValue,
-      total: priceValue * quantityValue,
-    };
-    setItems(copy);
+  &.mob-item-container {
+    display: none;
   }
 
+  @media (max-width: 507px) {
+    &.item-name-container {
+      display: none;
+    }
+
+    &.mob-item-container {
+      display: block;
+      gap: 1.3rem;
+    }
+  }
+`;
+
+const ItemsForm = ({ items, setItems, id, name, quantity, price, total }) => {
+  const [nameInput, setNameInput] = useState(name || "");
+  const [quantityInput, setQuantityInput] = useState(quantity || 0);
+  const [priceInput, setPriceInput] = useState(price || 0);
+  const [totalInput, setTotalInput] = useState(priceInput * quantityInput);
+
   const handleDelete = () => {
-    setItems(items.filter((item, index) => index - 1 !== id - 1))
+    let itemsCop = items;
+    itemsCop = itemsCop.filter((item) => item.id !== id);
+    setItems(itemsCop);
   };
+
+  console.log(items.find((item) => item.id === id).total);
+
+  useEffect(() => {
+    setTotalInput(priceInput * quantityInput);
+
+    let copy = items;
+    let item = copy.find((item) => item.id === id);
+    item.name = nameInput;
+    item.quantity = quantityInput;
+    item.price = priceInput;
+    item.total = totalInput;
+
+    setItems(copy);
+  }, [nameInput, quantityInput, priceInput, totalInput]);
 
   return (
     <Fragment>
+      <InputField className="mob-item-container">
+        <StyledLabel>Item Name</StyledLabel>
+        <MobileItemName onChange={(e) => setNameInput(e.target.value)} />
+      </InputField>
       <ItemsField>
-        <InputField>
+        <InputField className="item-name-container">
           <StyledLabel>Item Name</StyledLabel>
-          <ItemName
-            value={nameValue}
-            onChange={(e) => setNameValue(e.target.value)}
-          />
+          <ItemName onChange={(e) => setNameInput(e.target.value)} />
         </InputField>
         <InputField>
           <StyledLabel>Qty</StyledLabel>
-          <ItemQuantity
-            value={quantityValue}
-            onChange={(e) => setQuantityValue(+e.target.value)}
-          />
+          <ItemQuantity onChange={(e) => setQuantityInput(+e.target.value)} />
         </InputField>
         <InputField>
           <StyledLabel>Price</StyledLabel>
-          <ItemPrice onChange={(e) => setPriceValue(+e.target.value)} />
+          <ItemPrice onChange={(e) => setPriceInput(+e.target.value)} />
         </InputField>
         <InputField>
           <StyledLabel>Total</StyledLabel>
           <ItemTotal>
-            {(priceValue * quantityValue).toLocaleString()} <DeleteIcon onClick={handleDelete} />
+            <p>{totalInput}</p> <DeleteIcon onClick={handleDelete} />
           </ItemTotal>
         </InputField>
       </ItemsField>

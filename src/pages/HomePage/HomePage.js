@@ -5,7 +5,7 @@ import { PlusIcon } from "../../assets/icons";
 import styled from "styled-components";
 
 const Container = styled.div`
-  width: 700px;
+  width: 70vw;
   min-height: 600px;
   margin: auto;
   padding: 8rem .3rem;

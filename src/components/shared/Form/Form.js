@@ -1,4 +1,5 @@
 import "react-datepicker/dist/react-datepicker.css";
+import ShortUniqueId from "short-unique-id";
 
 import React, { Fragment, useState } from "react";
 
@@ -7,6 +8,7 @@ import DatePicker from "react-datepicker";
 import ItemsForm from "./ItemsForm";
 import styled from "styled-components";
 import { useForm } from "@mantine/form";
+const uid = new ShortUniqueId({ length: 4 });
 
 const Container = styled.div`
   height: 100%;
@@ -78,13 +80,13 @@ const BillText = styled.h5`
 const CustomInput = styled.div`
   background-color: ${({ theme }) => theme.colors.bgInput};
   border: 1px solid ${({ theme }) => theme.colors.bgInputBorder};
-  width: 200%;
+  width: 100%;
   padding: 13px 10px 13px 17px;
   border-radius: 5px;
   font-size: 1.1rem;
   color: ${({ theme }) => theme.colors.textPrimary};
   font-weight: bold;
-
+  width: 50%;
   display: flex;
   justify-content: space-between;
   cursor: pointer;
@@ -139,14 +141,8 @@ const Form = () => {
     },
   });
 
-  const [items, setItems] = useState([{
-    name: "nameValue",
-    quantity: 12,
-    price: 12,
-  }]);
+  const [items, setItems] = useState([]);
 
-console.log(items)
-  
   return (
     <Container>
       <Title>New Invoice</Title>
@@ -234,15 +230,21 @@ console.log(items)
         <ItemsSection>
           <StyledItemsLabel>Item List</StyledItemsLabel>
           <div>
-            {items.map((data, i) => (
-              <ItemsForm id={i} key={i} data={data} items={items} setItems={setItems} />
+            {items.map((item) => (
+              <ItemsForm key={item.id} items={items} setItems={setItems} {...item} />
             ))}
           </div>
           <AddItemButton
             onClick={() =>
               setItems((prev) => [
                 ...prev,
-                {}
+                {
+                  name: "",
+                  quantity: 0,
+                  price: 0,
+                  total: 0,
+                  id: uid(),
+                },
               ])
             }
             type="button"
