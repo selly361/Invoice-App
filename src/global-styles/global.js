@@ -27,6 +27,10 @@ export const GlobalStyle = createGlobalStyle`
       text-decoration: none;
     }
 
+    button {
+      background-color: inherit;
+    }
+
     button, svg {
       cursor: pointer;
     }

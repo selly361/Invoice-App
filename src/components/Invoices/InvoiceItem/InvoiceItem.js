@@ -14,8 +14,8 @@ const StyledInvoice = styled.div`
   grid-template-columns: repeat(5, 1fr) 0.1fr;
   align-items: center;
   justify-content: space-between;
-  transition: border 1s ease;
-
+  transition: 1s ease;
+      transition-property: background-color, border-color;
   &:hover {
     border-color: hsl(252, 94%, 67%);
     cursor: pointer;

@@ -12,8 +12,9 @@ const StyledWrapper = styled.main`
   min-height: 100vh;
   width: 100vw;
   background-color: ${({ theme }) => theme.colors.bgMain};
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Wrapper = ({ children }) => {

@@ -39,7 +39,7 @@ Date.prototype.addDays = function(days) {
 }
 
 const Form = () => {
-  const { editInvoice, handleSubmit, setToggleForm, edit } = useContext(InvoiceContextProvider)
+  const { editInvoice, handleSubmit, setToggleForm, setEditInvoice } = useContext(InvoiceContextProvider)
 
   const [items, setItems] = useState(editInvoice.invoice?.items || []);
 
@@ -83,7 +83,7 @@ const Form = () => {
     form.setFieldValue("paymentTerms", selectedOption)
   }, [selectedOption])
 
-
+  let draft = true;
   return (
     <Container>
       <Title>New Invoice</Title>
@@ -203,7 +203,7 @@ const Form = () => {
           </AddItemButton>
         </ItemsSection>
       </StyledForm>
-      <FormButtons setToggleForm={setToggleForm} />
+      <FormButtons setEditInvoice={setEditInvoice} editInvoice={editInvoice} onSubmit={(e) => handleSubmit({ values: form.values, items, e, id: uid(), draft })} setToggleForm={setToggleForm} />
     </Container>
   );
 };
