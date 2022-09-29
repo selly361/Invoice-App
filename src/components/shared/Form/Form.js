@@ -19,7 +19,7 @@ import {
   StyledSelect,
   Title
 } from "./form-styles";
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useState, useEffect } from "react";
 
 import { CalenderIcon } from "../../../assets/icons";
 import DatePicker from "react-datepicker";
@@ -39,11 +39,11 @@ Date.prototype.addDays = function(days) {
 }
 
 const Form = () => {
-  const { editInvoice, invoices, setInvoices, handleSubmit } = useContext(InvoiceContextProvider)
+  const { editInvoice, handleSubmit, setToggleForm, edit } = useContext(InvoiceContextProvider)
 
-  const [items, setItems] = useState(editInvoice?.items || []);
+  const [items, setItems] = useState(editInvoice.invoice?.items || []);
 
-  const [selectedOption, setSelectedOption] = useState(editInvoice?.paymentTerms || "30");
+  const [selectedOption, setSelectedOption] = useState(editInvoice.invoice?.paymentTerms || "30");
 
   let options = [
     { value: "1", label: "Net 1 Day" },
@@ -55,27 +55,33 @@ const Form = () => {
   const form = useForm({
     initialValues: {
       senderAddress: {
-        street: editInvoice?.senderAddress?.street || "",
-        city: editInvoice?.senderAddress?.city || "",
-        postCode: editInvoice?.senderAddress?.postCode || "",
-        country: editInvoice?.senderAddress?.country || "",
+        street: editInvoice.invoice?.senderAddress?.street || "",
+        city: editInvoice.invoice?.senderAddress?.city || "",
+        postCode: editInvoice.invoice?.senderAddress?.postCode || "",
+        country: editInvoice.invoice?.senderAddress?.country || "",
     },
-      clientName: editInvoice?.clientName || "",
-      clientEmail: editInvoice?.clientEmail || "",
+      clientName: editInvoice.invoice?.clientName || "",
+      clientEmail: editInvoice.invoice?.clientEmail || "",
       clientAddress: {
-        street: editInvoice?.clientAddress?.street || "",
-        city: editInvoice?.clientAddress?.city || "",
-        postCode: editInvoice?.clientAddress?.postCode || "",
-        country: editInvoice?.clientAddress?.country || "",
+        street: editInvoice.invoice?.clientAddress?.street || "",
+        city: editInvoice.invoice?.clientAddress?.city || "",
+        postCode: editInvoice.invoice?.clientAddress?.postCode || "",
+        country: editInvoice.invoice?.clientAddress?.country || "",
       },
-      createdAt: (editInvoice?.createdAt ? new Date(editInvoice?.createdAt) : new Date()),
-      paymentDue: (new Date(editInvoice?.createdAt).addDays(+selectedOption) || new Date().addDays(+selectedOption)),
+      createdAt: (editInvoice.invoice?.createdAt ? new Date(editInvoice.invoice?.createdAt) : new Date()),
+      paymentDue: ((editInvoice.invoice?.createdAt ? new Date(editInvoice.invoice?.createdAt).addDays(+selectedOption) : false) || new Date().addDays(+selectedOption)),
       paymentTerms: selectedOption,
-      description: editInvoice?.description || "",
-      status: "pending"
-    },
+      description: editInvoice.invoice?.description || "",
+      status: "Pending"
+    }
   });
 
+
+  useEffect(() => {
+    form.setFieldValue("paymentDue", ((editInvoice.invoice?.createdAt ? new Date(editInvoice.invoice?.createdAt).addDays(+selectedOption) : false) || new Date().addDays(+selectedOption)))
+
+    form.setFieldValue("paymentTerms", selectedOption)
+  }, [selectedOption])
 
 
   return (
@@ -86,23 +92,23 @@ const Form = () => {
           <BillText>Bill from</BillText>
           <InputField>
             <StyledLabel>Street Address</StyledLabel>
-            <StyledInput {...form.getInputProps("senderAddress.street")} />
+            <StyledInput required {...form.getInputProps("senderAddress.street")} />
           </InputField>
 
           <InputsField>
             <InputField>
               <StyledLabel>City</StyledLabel>
-              <StyledInput {...form.getInputProps("senderAddress.city")} />
+              <StyledInput required {...form.getInputProps("senderAddress.city")} />
             </InputField>
 
             <InputField>
               <StyledLabel>Post Code</StyledLabel>
-              <StyledInput {...form.getInputProps("senderAddress.postCode")} />
+              <StyledInput required {...form.getInputProps("senderAddress.postCode")} />
             </InputField>
 
             <InputField>
               <StyledLabel>Country</StyledLabel>
-              <StyledInput {...form.getInputProps("senderAddress.country")} />
+              <StyledInput required {...form.getInputProps("senderAddress.country")} />
             </InputField>
           </InputsField>
         </SenderAddressSection>
@@ -110,11 +116,11 @@ const Form = () => {
           <BillText>Bill to</BillText>
           <InputField>
             <StyledLabel>Client's name</StyledLabel>
-            <StyledInput {...form.getInputProps("clientName")} />
+            <StyledInput required {...form.getInputProps("clientName")} />
           </InputField>
           <InputField>
             <StyledLabel>Client's email</StyledLabel>
-            <StyledInput
+            <StyledInput required
               placeholder="e.g. email@gmail.com"
               {...form.getInputProps("clientEmail")}
             />
@@ -122,17 +128,17 @@ const Form = () => {
           <InputsField>
             <InputField>
               <StyledLabel>City</StyledLabel>
-              <StyledInput {...form.getInputProps("senderAddress.city")} />
+              <StyledInput required {...form.getInputProps("senderAddress.city")} />
             </InputField>
 
             <InputField>
               <StyledLabel>Post Code</StyledLabel>
-              <StyledInput {...form.getInputProps("senderAddress.postCode")} />
+              <StyledInput required {...form.getInputProps("senderAddress.postCode")} />
             </InputField>
 
             <InputField>
               <StyledLabel>Country</StyledLabel>
-              <StyledInput {...form.getInputProps("senderAddress.country")} />
+              <StyledInput required {...form.getInputProps("senderAddress.country")} />
             </InputField>
           </InputsField>
           <DatesField>
@@ -151,16 +157,16 @@ const Form = () => {
             </InputField>
             <InputField>
               <StyledLabel>Payment Terms</StyledLabel>
-              <StyledSelect value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+              <StyledSelect defaultValue={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
                 {options.map((option) => (
-                  <option value={option.value}>{option.label}</option>
+                  <option key={option.label} value={option.value}>{option.label}</option>
                 ))}
               </StyledSelect>
             </InputField>
           </DatesField>
           <InputField>
             <StyledLabel>Project Description</StyledLabel>
-            <StyledInput
+            <StyledInput required
               placeholder="e.g. Graphic Design Service"
               {...form.getInputProps("description")}
             />
@@ -197,7 +203,7 @@ const Form = () => {
           </AddItemButton>
         </ItemsSection>
       </StyledForm>
-      <FormButtons />
+      <FormButtons setToggleForm={setToggleForm} />
     </Container>
   );
 };

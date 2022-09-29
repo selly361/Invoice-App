@@ -31,6 +31,10 @@ export const StyledInput = styled.input`
   border-radius: 5px;
   color: ${({ theme }) => theme.colors.textPrimary};
   font-weight: bold;
+
+  &.invalid {
+  border-color: ${({ theme }) => theme.colors.red};
+  }
 `;
 
 export const StyledLabel = styled.label`
@@ -46,6 +50,9 @@ export const StyledSelect = styled.select`
   font-weight: bold;
 
 
+  &.invalid {
+  border-color: ${({ theme }) => theme.colors.red};
+  }
 `
 
 export const InputField = styled.fieldset`

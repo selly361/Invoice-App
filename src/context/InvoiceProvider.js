@@ -1,68 +1,102 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 
 import data from "../assets/data.json";
 import { format } from "prettier";
 import { useTheme } from "../hooks/useTheme";
+import { CopyButton } from "@mantine/core";
 
 export const InvoiceContextProvider = createContext({});
 
 const InvoiceProvider = ({ children }) => {
-  const [invoices, setInvoices] = useState(JSON.parse(localStorage.getItem("invoices")) || data);
-  
+  const [invoicesData, setInvoicesData] = useState(
+    JSON.parse(localStorage.getItem("invoices")) || data
+  );
+  const [invoices, setInvoices] = useState(invoicesData);
+
   const [toggleForm, setToggleForm] = useState(false);
   const [toggleDelete, setToggleDelete] = useState(false);
-  const [editInvoice, setEditInvoice] = useState({});
-  console.log(invoices)
+  const [editInvoice, setEditInvoice] = useState({
+    edit: false,
+    id: "",
+    invoice: {},
+  });
+
+
+  const calcTotal = (arr) => {
+    let sum = 0;
+
+    for(let a of arr){
+      sum += +a.total
+    }
+
+    return sum.toLocaleString()
+  }
+
   const handleDelete = (id) => {
-    setInvoices(() => invoices.filter((invoice) => invoice.id !== id));
+    setInvoices(invoices.filter((invoice) => invoice.id !== id));
   };
 
   const handleMarkPaid = (id) => {
-    let invoicesData = invoices;
-    let foundedInvoice = invoicesData.find((invoice) => invoice.id === id);
-    foundedInvoice.status = "paid";
-
-    setInvoices(invoicesData);
+    let copy = invoices;
+    let foundedInvoice = copy.find((invoice) => invoice.id === id);
+    foundedInvoice.status = "Paid";
+    setInvoices((prev) => [...copy]);
   };
 
   const handleEdit = (id) => {
-    setToggleForm(true);
-    let invoiceData = invoices;
-    let foundedInvoice = invoiceData.find((invoice) => invoice.id === id);
-    setEditInvoice(foundedInvoice);
+    let invoice = invoices.find((invoice) => invoice.id === id);
+    setEditInvoice((prev) => ({ ...prev, edit: true, id, invoice }));
   };
 
   useEffect(() => {
-    localStorage.setItem("invoices", JSON.stringify(invoices))
+    localStorage.setItem("invoices", JSON.stringify(invoices));
+  }, [JSON.stringify(invoices)]);
 
-  }, [invoices])
-
-
-
-  const handleSubmit = ({ values, items, e, id }) => {
+  const handleSubmit = ({ values, items, e, id, draft }) => {
     e.preventDefault();
 
-    let newInvoice = {
-      id: id.toUpperCase(),
-      createdAt: values.createdAt,
-      paymentDue: values.paymentDue,
-      description: values.description,
-      paymentTerms: values.paymentTerms,
-      clientName: values.clientName,
-      clientEmail: values.clientEmail,
-      status: values.status,
-      senderAddress: values.senderAddress,
-      clientAddress: values.clientAddress,
-      items,
-      total: items.length && items.reduce((prev, next) => prev.total + next.total)
+    if (editInvoice.edit) {
+      let copy = invoices;
+      let index = copy.findIndex((item) => item.id === editInvoice.id);
+
+
+        copy[index] = {
+        id: editInvoice.id,
+        createdAt: values.createdAt.toLocaleDateString(),
+        paymentDue: values.paymentDue.toLocaleDateString(),
+        description: values.description,
+        paymentTerms: values.paymentTerms,
+        clientName: values.clientName,
+        clientEmail: values.clientEmail,
+        status: "Pending",
+        senderAddress: values.senderAddress,
+        clientAddress: values.clientAddress,
+        items,
+        total: calcTotal(items),
+      };
+      setEditInvoice({});
+      setInvoices(prev => ([...copy]));
+    } else {
+      const totalValue = items.length ? items.reduce((prev, next) => prev.total + next.total) : 0;
+      setInvoices((prev) => [
+        {
+          id: id.toUpperCase(),
+          createdAt: values.createdAt.toLocaleDateString(),
+          paymentDue: values.paymentDue.toLocaleDateString(),
+          description: values.description,
+          paymentTerms: values.paymentTerms,
+          clientName: values.clientName,
+          clientEmail: values.clientEmail,
+          status: draft ? "Draft" : values.status,
+          senderAddress: values.senderAddress,
+          clientAddress: values.clientAddress,
+          items,
+          total: calcTotal(items),
+        },
+        ...prev,
+      ]);
+      setToggleForm(false);
     }
-    
-    let invoiceData = invoices;
-    invoiceData.push(newInvoice)
-
-    setInvoices(invoiceData)
-
-    setToggleForm((e) => false);
   };
 
   return (

@@ -123,7 +123,7 @@ const ItemsForm = ({ items, setItems, id, name, quantity, price, total }) => {
         <InputField className="items-input">
           <StyledLabel>Total</StyledLabel>
           <ItemTotal>
-            <p>{totalInput}</p> <DeleteIcon onClick={handleDelete} />
+            <p>{totalInput.toLocaleString()}</p> <DeleteIcon onClick={handleDelete} />
           </ItemTotal>
         </InputField>
       </ItemsField>

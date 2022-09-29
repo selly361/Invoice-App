@@ -21,9 +21,10 @@ export const GlobalStyle = createGlobalStyle`
       transition-property: background-color, color;
     }
 
-    button, input, fieldset {
+    button, input, fieldset, a {
       border: none;
       outline: none;
+      text-decoration: none;
     }
 
     button, svg {
@@ -32,8 +33,9 @@ export const GlobalStyle = createGlobalStyle`
 
 
     ::-webkit-scrollbar {
-      width: 15px;
+      width: 10px;
       height: 10%;
+      background: ${({theme}) => theme.colors.bgMain};
     }
     ::-webkit-scrollbar-track {
       -webkit-border-radius: 10px;
@@ -42,10 +44,7 @@ export const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar-thumb {
       -webkit-border-radius: 10px;
       border-radius: 5px;
-      background: hsl(233,30%,21%) ;
-    }
-    ::-webkit-scrollbar-thumb:window-inactive {
-      background: rgba(255, 255, 255, 0.3);
+      background: ${({theme}) => theme.colors.bgFormScroll};
     }
 `;
 

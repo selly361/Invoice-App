@@ -4,12 +4,14 @@ import styled from "styled-components";
 const Button = styled.button`
     padding: 1rem 2rem;
     font-size: 1.3rem;
+  border-radius: 10px;
     
     `
 
-const DiscardButton = styled.button`
+
+
+const DiscardButton = styled(Button)`
   padding: 1.1rem 0;
-  border-radius: 25px;
   background-color: ${({ theme }) => theme.colors.btnSecondary};
   color: ${({ theme }) => theme.colors.textSecondary};
   font-weight: bold;
@@ -20,19 +22,26 @@ const DiscardButton = styled.button`
   }
 `
 
+const ButtonsWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`
+
 const Container = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+    height: 100px;
+    align-items: center;
 `
-const FormButtons = ({ }) => {
+const FormButtons = ({ setToggleForm }) => {
   return (
     <Container>
-      <DiscardButton>Discard</DiscardButton>
-      <div>
+      <DiscardButton onClick={() => setToggleForm(e => !e)}>Discard</DiscardButton>
+      <ButtonsWrapper>
         <Button>Save as Draft</Button>
         <Button type="submit" form="add-invoice-form">Save & Send</Button>
-      </div>
+      </ButtonsWrapper>
     </Container>
   );
 };

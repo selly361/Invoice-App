@@ -2,6 +2,7 @@ import { Logo, MoonIcon, SunIcon } from "../../assets/icons";
 
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const StyledNavbar = styled.header`
   position: fixed;
@@ -71,21 +72,24 @@ const Divider = styled.div`
   background-color: ${({ theme }) => theme.colors.grayLight};
 `;
 
-
 const ThemeButton = styled.button`
   background-color: transparent;
   border: none;
   outline: none;
   cursor: pointer;
-`
+`;
 const Navbar = ({ theme, setTheme }) => {
   return (
     <StyledNavbar>
-      <LogoWrapper>
-        <Logo />
-      </LogoWrapper>
+      <Link to="/">
+        <LogoWrapper>
+          <Logo />
+        </LogoWrapper>
+      </Link>
       <Container>
-        <ThemeButton onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+        <ThemeButton
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
           {theme === "dark" ? <SunIcon /> : <MoonIcon />}
         </ThemeButton>
 

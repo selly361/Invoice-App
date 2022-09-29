@@ -23,11 +23,14 @@ const Wrapper = ({ children }) => {
     toggleForm,
     setToggleDelete,
     setToggleForm,
+    editInvoice,
+    setEditInvoice
   } = useContext(InvoiceContextProvider);
 
   const handleOverlayClick = () => {
     setToggleDelete(false);
     setToggleForm(false);
+    setEditInvoice(prev => ({...prev, edit: false}))
   };
 
   useEffect(() => {
@@ -43,11 +46,11 @@ const Wrapper = ({ children }) => {
       <GlobalStyle />
       <StyledWrapper>
         <Navbar {...themeData} />
-        <FormWrapper toggleForm={toggleForm} />
+        <FormWrapper editInvoice={editInvoice} toggleForm={toggleForm} />
         {children}
       </StyledWrapper>
       <AnimatePresence>
-        {toggleForm || toggleDelete ? <Overlay handleOverlayClick={handleOverlayClick} /> : null}
+        {toggleForm || toggleDelete || editInvoice.edit ? <Overlay handleOverlayClick={handleOverlayClick} /> : null}
       </AnimatePresence>
     </ThemeProvider>
   );

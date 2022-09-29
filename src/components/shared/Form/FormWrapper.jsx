@@ -20,7 +20,7 @@ const StyledWrapper = styled(motion.div)`
   }
 `;
 
-const FormWrapper = ({ toggleForm }) => {
+const FormWrapper = ({ toggleForm, editInvoice }) => {
   const animation = {
     hidden: {
       x: "-100vw",
@@ -36,7 +36,7 @@ const FormWrapper = ({ toggleForm }) => {
   };
   return (
     <AnimatePresence mode="wait">
-      {toggleForm && (
+      {(toggleForm || editInvoice.edit) && (
         <StyledWrapper variants={animation} initial="hidden" animate="visible" exit="exit">
           <Form />
         </StyledWrapper>
