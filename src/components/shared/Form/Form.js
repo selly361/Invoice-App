@@ -1,152 +1,87 @@
 import "react-datepicker/dist/react-datepicker.css";
-import ShortUniqueId from "short-unique-id";
 
-import React, { Fragment, useState } from "react";
+import {
+  AddItemButton,
+  BillText,
+  ClientAddressSection,
+  Container,
+  CustomInput,
+  DatesField,
+  InputField,
+  InputsField,
+  ItemsContainer,
+  ItemsSection,
+  SenderAddressSection,
+  StyledForm,
+  StyledInput,
+  StyledItemsLabel,
+  StyledLabel,
+  StyledSelect,
+  Title
+} from "./form-styles";
+import React, { Fragment, useContext, useState } from "react";
 
 import { CalenderIcon } from "../../../assets/icons";
 import DatePicker from "react-datepicker";
+import FormButtons from "./Buttons";
+import { InvoiceContextProvider } from "../../../context/InvoiceProvider";
 import ItemsForm from "./ItemsForm";
+import ShortUniqueId from "short-unique-id";
 import styled from "styled-components";
 import { useForm } from "@mantine/form";
-const uid = new ShortUniqueId({ length: 4 });
 
-const Container = styled.div`
-  height: 100%;
-  width: 90%;
-  margin: 2rem auto;
-`;
+const uid = new ShortUniqueId({ length: 6 });
 
-const StyledForm = styled.form`
-  width: 100%;
-  height: 70%;
-  background-color: ${({ theme }) => theme.colors.bgForm};
-  display: flex;
-  flex-flow: column;
-  gap: 2.5rem;
-  overflow-y: scroll;
-  padding: 1.5rem 1rem 1.5rem 0;
-`;
-
-const Title = styled.h2`
-  color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: 2rem;
-  margin-bottom: 2rem;
-`;
-
-const StyledInput = styled.input`
-  background-color: ${({ theme }) => theme.colors.bgInput};
-  border: 1px solid ${({ theme }) => theme.colors.bgInputBorder};
-  width: 100%;
-  padding: 13px 10px 13px 17px;
-  border-radius: 5px;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  font-weight: bold;
-`;
-
-const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-const InputField = styled.fieldset`
-  display: flex;
-  gap: 0.7rem;
-  flex-flow: column;
-`;
-
-const SenderAddressSection = styled.section`
-  display: flex;
-  gap: 1.5rem;
-  flex-flow: column;
-`;
-
-const InputsField = styled.fieldset`
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-`;
-
-const DatesField = styled.fieldset`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const ClientAddressSection = styled(SenderAddressSection)``;
-
-const BillText = styled.h5`
-  color: ${({ theme }) => theme.colors.purple};
-`;
-
-const CustomInput = styled.div`
-  background-color: ${({ theme }) => theme.colors.bgInput};
-  border: 1px solid ${({ theme }) => theme.colors.bgInputBorder};
-  width: 100%;
-  padding: 13px 10px 13px 17px;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  font-weight: bold;
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-`;
-
-const ItemsSection = styled.section`
-  display: flex;
-  gap: 1.5rem;
-  flex-flow: column;
-`;
-
-const StyledItemsLabel = styled(StyledLabel)`
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.grayMedium};
-`;
-
-const AddItemButton = styled.button`
-  width: 100%;
-  padding: 1.1rem 0;
-  border-radius: 25px;
-  background-color: ${({ theme }) => theme.colors.btnSecondary};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-weight: bold;
-  transition: 1s background-color ease;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.btnSecondaryHover};
-  }
-`;
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
 
 const Form = () => {
+  const { editInvoice, invoices, setInvoices, handleSubmit } = useContext(InvoiceContextProvider)
+
+  const [items, setItems] = useState(editInvoice?.items || []);
+
+  const [selectedOption, setSelectedOption] = useState(editInvoice?.paymentTerms || "30");
+
+  let options = [
+    { value: "1", label: "Net 1 Day" },
+    { value: "7", label: "Net 7 Day" },
+    { value: "14", label: "Net 14 Day" },
+    { value: "30", label: "Net 30 day" },
+  ];
+
   const form = useForm({
     initialValues: {
       senderAddress: {
-        street: "",
-        city: "",
-        postCode: "",
-        country: "",
-      },
-      clientName: "",
-      clientEmail: "",
+        street: editInvoice?.senderAddress?.street || "",
+        city: editInvoice?.senderAddress?.city || "",
+        postCode: editInvoice?.senderAddress?.postCode || "",
+        country: editInvoice?.senderAddress?.country || "",
+    },
+      clientName: editInvoice?.clientName || "",
+      clientEmail: editInvoice?.clientEmail || "",
       clientAddress: {
-        street: "",
-        city: "",
-        postCode: "",
-        country: "",
+        street: editInvoice?.clientAddress?.street || "",
+        city: editInvoice?.clientAddress?.city || "",
+        postCode: editInvoice?.clientAddress?.postCode || "",
+        country: editInvoice?.clientAddress?.country || "",
       },
-      createdAt: new Date(),
-      paymentTerms: "30",
-      description: "",
+      createdAt: (editInvoice?.createdAt ? new Date(editInvoice?.createdAt) : new Date()),
+      paymentDue: (new Date(editInvoice?.createdAt).addDays(+selectedOption) || new Date().addDays(+selectedOption)),
+      paymentTerms: selectedOption,
+      description: editInvoice?.description || "",
+      status: "pending"
     },
   });
 
-  const [items, setItems] = useState([]);
+
 
   return (
     <Container>
       <Title>New Invoice</Title>
-      <StyledForm>
+      <StyledForm onSubmit={(e) => handleSubmit({ values: form.values, items, e, id: uid() })} id="add-invoice-form">
         <SenderAddressSection>
           <BillText>Bill from</BillText>
           <InputField>
@@ -216,7 +151,11 @@ const Form = () => {
             </InputField>
             <InputField>
               <StyledLabel>Payment Terms</StyledLabel>
-              <StyledInput {...form.getInputProps("paymentTerms")} />
+              <StyledSelect value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+                {options.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))}
+              </StyledSelect>
             </InputField>
           </DatesField>
           <InputField>
@@ -229,11 +168,16 @@ const Form = () => {
         </ClientAddressSection>
         <ItemsSection>
           <StyledItemsLabel>Item List</StyledItemsLabel>
-          <div>
+          <ItemsContainer>
             {items.map((item) => (
-              <ItemsForm key={item.id} items={items} setItems={setItems} {...item} />
+              <ItemsForm
+                key={item.id}
+                items={items}
+                setItems={setItems}
+                {...item}
+              />
             ))}
-          </div>
+          </ItemsContainer>
           <AddItemButton
             onClick={() =>
               setItems((prev) => [
@@ -253,14 +197,9 @@ const Form = () => {
           </AddItemButton>
         </ItemsSection>
       </StyledForm>
+      <FormButtons />
     </Container>
   );
 };
 
 export default Form;
-
-// onClick={() => {
-//   let items = form.getInputProps("items").value;
-//   items = items.filter((item, index) => index !== i);
-//   form.setFieldValue("items", items);
-// }}

@@ -14,45 +14,40 @@ let defaultInput = styled.input`
   margin: 1rem 0;
 `;
 
-const ItemName = styled(defaultInput)`
-  width: 120px;
-`;
-
 const MobileItemName = styled(defaultInput)`
   width: 100%;
 `;
 
 const ItemQuantity = styled(defaultInput)`
-  width: 50px;
+  width: 100%;
 `;
 
 const ItemPrice = styled(defaultInput)`
-  width: 70px;
   overflow-x: auto;
 `;
 
 const ItemTotal = styled.h5`
   color: ${({ theme }) => theme.colors.textPrimary};
-  width: 120px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  width: 100%;
   padding: 13px 0;
-
+  margin: 1rem 0;
+  align-items: end;
   p {
     overflow-x: scroll;
-    width: 60px;
   }
 `;
 
 const ItemsField = styled.fieldset`
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
 `;
 
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.colors.textSecondary};
-  margin: .4rem 0;
+  margin: 0.4rem 0;
 `;
 
 const InputField = styled.fieldset`
@@ -60,10 +55,7 @@ const InputField = styled.fieldset`
   gap: 0.7rem;
   flex-flow: column;
   align-items: start;
-
-  &.mob-item-container {
-    display: none;
-  }
+  width: 100%;
 
   @media (max-width: 507px) {
     &.item-name-container {
@@ -89,7 +81,7 @@ const ItemsForm = ({ items, setItems, id, name, quantity, price, total }) => {
     setItems(itemsCop);
   };
 
-  console.log(items.find((item) => item.id === id).total);
+
 
   useEffect(() => {
     setTotalInput(priceInput * quantityInput);
@@ -105,25 +97,30 @@ const ItemsForm = ({ items, setItems, id, name, quantity, price, total }) => {
   }, [nameInput, quantityInput, priceInput, totalInput]);
 
   return (
-    <Fragment>
+    <div>
       <InputField className="mob-item-container">
         <StyledLabel>Item Name</StyledLabel>
-        <MobileItemName onChange={(e) => setNameInput(e.target.value)} />
+        <MobileItemName
+          value={nameInput}
+          onChange={(e) => setNameInput(e.target.value)}
+        />
       </InputField>
       <ItemsField>
-        <InputField className="item-name-container">
-          <StyledLabel>Item Name</StyledLabel>
-          <ItemName onChange={(e) => setNameInput(e.target.value)} />
-        </InputField>
         <InputField>
           <StyledLabel>Qty</StyledLabel>
-          <ItemQuantity onChange={(e) => setQuantityInput(+e.target.value)} />
+          <ItemQuantity
+            value={quantityInput}
+            onChange={(e) => setQuantityInput(+e.target.value)}
+          />
         </InputField>
         <InputField>
           <StyledLabel>Price</StyledLabel>
-          <ItemPrice onChange={(e) => setPriceInput(+e.target.value)} />
+          <ItemPrice
+            value={priceInput}
+            onChange={(e) => setPriceInput(+e.target.value)}
+          />
         </InputField>
-        <InputField>
+        <InputField className="items-input">
           <StyledLabel>Total</StyledLabel>
           <ItemTotal>
             <p>{totalInput}</p> <DeleteIcon onClick={handleDelete} />
@@ -131,7 +128,7 @@ const ItemsForm = ({ items, setItems, id, name, quantity, price, total }) => {
         </InputField>
       </ItemsField>
       <br />
-    </Fragment>
+    </div>
   );
 };
 

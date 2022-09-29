@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
+import { InvoiceContextProvider } from '../../context/InvoiceProvider'
 
 export default function InvoicePage() {
   return (
-    <div>InvoicePage</div>
+    <div></div>
   )
 }

@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 70vw;
-  min-height: 600px;
+  min-height: 80vh;
   margin: auto;
   padding: 8rem .3rem;
 `;
@@ -57,7 +57,7 @@ const InvoiceLength = styled.p`
 `
 
 const HomePage = () => {
-const { setToggleForm } = useContext(InvoiceContextProvider)
+const { setToggleForm, invoices } = useContext(InvoiceContextProvider)
   return (
     <Container>
       <InvoiceHeader>
@@ -74,6 +74,17 @@ const { setToggleForm } = useContext(InvoiceContextProvider)
           </StyledButton>
         </div>
       </InvoiceHeader>
+      <div>
+        {invoices.map(invoice => (
+            <div>
+            <br />
+            <br />
+              <h1>{JSON.stringify(invoice)}</h1>
+              <br />
+              <br />
+          </div>
+        ))}
+      </div>
     </Container>
   );
 };

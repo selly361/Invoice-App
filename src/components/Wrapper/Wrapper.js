@@ -9,7 +9,7 @@ import Navbar from "../Navbar/Navbar";
 import Overlay from "../shared/Overlay/Overlay";
 
 const StyledWrapper = styled.main`
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   background-color: ${({ theme }) => theme.colors.bgMain};
   display: grid;
@@ -31,7 +31,11 @@ const Wrapper = ({ children }) => {
   };
 
   useEffect(() => {
-    document.body.style.overflow = "hidden"
+    if(toggleForm || toggleDelete){
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
   }, [toggleDelete, toggleForm])
 
   return (
