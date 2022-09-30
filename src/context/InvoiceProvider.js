@@ -40,7 +40,11 @@ const InvoiceProvider = ({ children }) => {
     if (filtering.length) {
       setFilter((prev) => ({ ...prev, filtering }));
     } else {
-      setFilter({});
+      setFilter({
+        pending: false,
+        paid: false,
+        draft: false,
+      });
     }
   };
 

@@ -18,6 +18,11 @@ const DropDown = styled.div`
  background-color: ${({ theme }) => theme.colors.bgFilterBox};
  transform: translate(-25%);
  bottom: -150px;
+ display: flex;
+ flex-flow: column;
+ padding: 1rem;
+ justify-content: start;
+ align-content: space-around;
 `;
 
 const DropDownSelector = styled.h5``;
@@ -39,6 +44,9 @@ const FilterTag = styled.h5`
 
 const Filter = styled.h5`
   color: ${({theme}) => theme.colors.textPrimary};
+  display: flex;
+  gap: 1rem;
+  height: max-content;
 `
 
 const CheckBox = styled.div`
@@ -62,13 +70,13 @@ const DropDownFilter = ({ setFilter, filter }) => {
       {open && (
         <DropDown>
           <DropDownSelector>
-            <Filter onClick={() => setFilter(prev => ({ ...prev, pending: !filter.paid }))}>Paid <CheckBox className={filter.paid ? "active" : ''} /></Filter>
+            <Filter onClick={() => setFilter(prev => ({ ...prev, pending: !filter.paid }))}>Paid <CheckBox className={filter?.paid ? "active" : ''} /></Filter>
           </DropDownSelector>
-          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, pending: !filter.pending }))}>
-            <Filter>Pending <CheckBox className={filter.pending ? "active" : ''} /></Filter>
+          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, pending: !filter?.pending }))}>
+            <Filter>Pending <CheckBox className={filter?.pending ? "active" : ''} /></Filter>
           </DropDownSelector>
-          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, draft: !filter.draft }))}>
-            <Filter>Draft <CheckBox className={filter.draft ? "active" : ''} /></Filter>
+          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, draft: !filter?.draft }))}>
+            <Filter>Draft <CheckBox className={filter?.draft ? "active" : ''} /></Filter>
           </DropDownSelector>
         </DropDown>
       )}
