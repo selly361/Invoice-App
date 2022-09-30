@@ -128,17 +128,17 @@ const Form = () => {
           <InputsField>
             <InputField>
               <StyledLabel>City</StyledLabel>
-              <StyledInput required {...form.getInputProps("senderAddress.city")} />
+              <StyledInput required {...form.getInputProps("clientAddress.city")} />
             </InputField>
 
             <InputField>
               <StyledLabel>Post Code</StyledLabel>
-              <StyledInput required {...form.getInputProps("senderAddress.postCode")} />
+              <StyledInput required {...form.getInputProps("clientAddress.postCode")} />
             </InputField>
 
             <InputField>
               <StyledLabel>Country</StyledLabel>
-              <StyledInput required {...form.getInputProps("senderAddress.country")} />
+              <StyledInput required {...form.getInputProps("clientAddress.country")} />
             </InputField>
           </InputsField>
           <DatesField>

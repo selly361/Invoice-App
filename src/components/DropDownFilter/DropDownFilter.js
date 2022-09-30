@@ -71,10 +71,10 @@ const DropDownFilter = ({ setFilter, filter }) => {
           <DropDownSelector>
             <Filter onClick={() => setFilter(prev => ({ ...prev, paid: !filter.paid }))}>Paid <CheckBox>{filter.paid && <CheckIcon />}</CheckBox></Filter>
           </DropDownSelector>
-          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, pending: !prev.pending }))}>
+          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, pending: !filter.pending }))}>
             <Filter>Pending <CheckBox>{filter.pending && <CheckIcon />}</CheckBox></Filter>
           </DropDownSelector>
-          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, draft: !prev.draft }))}>
+          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, draft: !filter.draft }))}>
             <Filter>Draft <CheckBox>{filter.draft && <CheckIcon />}</CheckBox></Filter>
           </DropDownSelector>
         </DropDown>

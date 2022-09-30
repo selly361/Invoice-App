@@ -74,7 +74,7 @@ const InvoiceProvider = ({ children }) => {
 
 
     setInvoices(filtered);
-  }, [filter]);
+  }, [filter.paid, filter.pending, filter.draft);
 
   useEffect(() => {
     localStorage.setItem("invoices", JSON.stringify(invoices));
