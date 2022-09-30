@@ -17,6 +17,8 @@ const StyledWrapper = styled(motion.div)`
 
   @media (max-width: 800px){
     width: 100vw;
+    border-radius: 0px;
+    overflow: hidden;
   }
 `;
 

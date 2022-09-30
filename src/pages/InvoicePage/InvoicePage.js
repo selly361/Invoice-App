@@ -1,11 +1,13 @@
+import { Link, useParams } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import styled from "styled-components";
+
+import { AnimatePresence } from "framer-motion";
 import { ArrowLeftIcon } from "../../assets/icons";
+import DeleteModal from "../../components/DeleteModal/DeleteModal";
+import { InvoiceContextProvider } from "../../context/InvoiceProvider";
 import InvoiceItem from "../../components/Invoices/InvoiceItem/InvoiceItem";
 import Status from "../../components/shared/Status/Status";
-
-import { InvoiceContextProvider } from "../../context/InvoiceProvider";
+import styled from "styled-components";
 
 const Container = styled.main`
   width: 700px;
@@ -32,7 +34,7 @@ const EditButton = styled(Button)`
   }
 `;
 
-const DeleteButton = styled(Button)`
+export const DeleteButton = styled(Button)`
   background-color: ${({ theme }) => theme.colors.btnDelete};
   color: ${({ theme }) => theme.colors.white};
 
@@ -83,7 +85,7 @@ const StatusContainer = styled.div`
   align-items: center;
 
   h5 {
-    color: ${({theme}) => theme.colors.textSecondary};
+    color: ${({ theme }) => theme.colors.textSecondary};
   }
 `;
 
@@ -95,8 +97,15 @@ const ButtonContainer = styled.div`
 
 export default function InvoicePage() {
   const { id } = useParams();
-  const { handleEdit, handleDelete, invoices, setInvoices, handleMarkPaid } =
-    useContext(InvoiceContextProvider);
+  const {
+    handleEdit,
+    handleDelete,
+    invoices,
+    setToggleDelete,
+    setInvoices,
+    toggleDelete,
+    handleMarkPaid,
+  } = useContext(InvoiceContextProvider);
 
   const selectedInvoice = invoices.find((invoice) => invoice.id === id);
 
@@ -114,21 +123,24 @@ export default function InvoicePage() {
       <InvoiceHeader>
         <StatusContainer>
           <h5>Status </h5>
-          <Status status={selectedInvoice.status} />
+          <Status status={selectedInvoice?.status} />
         </StatusContainer>
         <ButtonContainer>
-          {selectedInvoice.status === "Pending" ||
-          selectedInvoice.status === "Draft" ? (
+          {selectedInvoice?.status === "Pending" ||
+          selectedInvoice?.status === "Draft" ? (
             <EditButton onClick={() => handleEdit(id)}>Edit</EditButton>
           ) : null}
-          <DeleteButton>Delete</DeleteButton>
-          {selectedInvoice.status == "Pending" ? (
+          <DeleteButton onClick={() => setToggleDelete(true)}>
+            Delete
+          </DeleteButton>
+          {selectedInvoice?.status == "Pending" ? (
             <MarkPaidButton onClick={() => handleMarkPaid(id)}>
               Mark as Paid
             </MarkPaidButton>
           ) : null}
         </ButtonContainer>
       </InvoiceHeader>
+      <AnimatePresence>{toggleDelete && <DeleteModal setToggleDelete={setToggleDelete} id={id} handleDelete={handleDelete} />}</AnimatePresence>
     </Container>
   );
 }

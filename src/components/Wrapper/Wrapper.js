@@ -3,6 +3,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { useContext, useEffect } from "react";
 
 import { AnimatePresence } from "framer-motion";
+import DeleteModal from "../DeleteModal/DeleteModal";
 import FormWrapper from "../shared/Form/FormWrapper";
 import { InvoiceContextProvider } from "../../context/InvoiceProvider";
 import Navbar from "../Navbar/Navbar";

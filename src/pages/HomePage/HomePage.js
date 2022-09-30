@@ -1,17 +1,17 @@
 import React, { useContext, useEffect } from "react";
 
-import { InvoiceContextProvider } from "../../context/InvoiceProvider";
-import { PlusIcon } from "../../assets/icons";
-import styled from "styled-components";
-import InvoicesItem from "../../components/Invoices/InvoiceItems/InvoicesItem";
 import { CheckIcon } from "@mantine/core";
 import DropDownFilter from "../../components/DropDownFilter/DropDownFilter";
+import { InvoiceContextProvider } from "../../context/InvoiceProvider";
+import InvoicesItem from "../../components/Invoices/InvoiceItems/InvoicesItem";
+import { PlusIcon } from "../../assets/icons";
+import styled from "styled-components";
 
 const Container = styled.div`
   width: 750px;
   min-height: 80vh;
   margin: auto;
-  padding: 8rem 0.3rem;
+  padding: 6rem 0.3rem;
   display: flex;
   gap: 2rem;
   flex-flow: column;
@@ -43,6 +43,10 @@ const StyledButton = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.colors.btnPrimaryHover};
   }
+
+  @media (max-width: 700px){
+    padding: 7px 12px;
+    gap: 0.2rem;
 `;
 
 const IconWrapper = styled.div`
@@ -57,6 +61,10 @@ const IconWrapper = styled.div`
 const Title = styled.h1`
   color: ${({ theme }) => theme.colors.textPrimary};
   font-weight: bold;
+
+  @media (max-width: 500px){
+      font-size: 1.4rem;
+  }
 `;
 const InvoiceDetailWrapper = styled.div`
   display: flex;
@@ -66,12 +74,22 @@ const InvoiceDetailWrapper = styled.div`
 
 const InvoiceLength = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: .9rem;
 `;
 
 const Wrap = styled.div`
   display: flex;
-  gap: 1rem;
   align-items: center;
+  width: 40%;
+  justify-content: space-between;
+`
+
+const Hide = styled.span`
+
+
+  @media (max-width: 700px){
+    display: none;
+  }
 `
 
 const HomePage = () => {
@@ -100,7 +118,7 @@ const HomePage = () => {
             <IconWrapper>
               <PlusIcon />
             </IconWrapper>
-            New Invoice
+            New <Hide>Invoice</Hide>
           </StyledButton>
         </Wrap>
       </InvoiceHeader>

@@ -9,6 +9,10 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'League Spartan', sans-serif;
     }
 
+    *:focus, *:active {
+      -webkit-tap-highlight-color: transparent;
+    }
+
 
     body {
         min-height: 100vh;
@@ -16,7 +20,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
 
-    header, div, main, h1, h2, h3, h4, h5, h6 {
+    header, div, main, h1, h2, h3, h4, h5, h6, span, input, fieldset, form {
       transition: 1s ease;
       transition-property: background-color, color;
     }

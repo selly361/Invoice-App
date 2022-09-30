@@ -1,15 +1,15 @@
 import { Logo, MoonIcon, SunIcon } from "../../assets/icons";
 
+import { Link } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 const StyledNavbar = styled.header`
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 10vh;
+  height: 12vh;
   background-color: ${({ theme }) => theme.colors.bgHeader};
   display: flex;
   justify-content: space-between;
@@ -20,7 +20,7 @@ const LogoWrapper = styled.div`
   position: relative;
   display: grid;
   place-items: center;
-  width: 100px;
+  width: 90px;
   height: 100%;
   border-radius: 0px 20px 20px 0px;
   background: rgb(124, 93, 250);

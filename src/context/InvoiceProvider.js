@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useMemo, useState } from "react";
 
+import { CopyButton } from "@mantine/core";
 import data from "../assets/data.json";
 import { format } from "prettier";
 import { useTheme } from "../hooks/useTheme";
-import { CopyButton } from "@mantine/core";
 
 export const InvoiceContextProvider = createContext({});
 
@@ -12,11 +12,7 @@ const InvoiceProvider = ({ children }) => {
     JSON.parse(sessionStorage.getItem("invoices")) || data
   );
   const [invoices, setInvoices] = useState(invoicesData);
-  const [filter, setFilter] = useState({
-    pending: false,
-    paid: false,
-    draft: false,
-  });
+  const [filter, setFilter] = useState({});
 
   const [toggleForm, setToggleForm] = useState(false);
   const [toggleDelete, setToggleDelete] = useState(false);
@@ -36,17 +32,19 @@ const InvoiceProvider = ({ children }) => {
     return sum.toLocaleString();
   };
 
-
-
   const handleDelete = (id) => {
-    setInvoices(invoices.filter((invoice) => invoice.id !== id));
+    let copy = [...invoicesData]
+    copy = copy.filter((invoice) => invoice.id !== id)
+    setInvoicesData(copy);
+    setInvoices(invoicesData);
+    setToggleDelete(false)
   };
 
   const handleMarkPaid = (id) => {
     let copy = invoices;
     let foundedInvoice = copy.find((invoice) => invoice.id === id);
     foundedInvoice.status = "Paid";
-    setInvoices((prev) => [...copy]);
+    setInvoicesData((prev) => [...copy]);
   };
 
   const handleEdit = (id) => {
@@ -54,30 +52,30 @@ const InvoiceProvider = ({ children }) => {
     setEditInvoice((prev) => ({ ...prev, edit: true, id, invoice }));
   };
 
+  const handleFilter = () => {
+    let whatToFilter = [];
+    filter.paid && whatToFilter.push("Paid");
+    filter.pending && whatToFilter.push("Pending");
+    filter.draft && whatToFilter.push("Draft");
 
+    let items = invoicesData;
 
-  useEffect(() => {
-    let filtered = invoices;
-    const filterInvoice = (status, invoiceArr) =>
-      invoiceArr.filter((invoice) => invoice.status === status);
-
-    if (filter.paid) {
-      filtered = filterInvoice("Paid", filtered);
-    } else if (filter.pending) {
-      filtered = filterInvoice("Pending", filtered);
-    } else if (filter.draft) {
-      filtered = filterInvoice("Draft", filtered);
-    } else {
-      filtered = invoicesData;
+    items = items.filter((invoice) => whatToFilter.includes(invoice.status));
+    
+    if(!filter.paid && !filter.pending && !filter.draft){
+      items = invoicesData
     }
 
-
-
-    setInvoices(filtered);
-  }, [filter.paid, filter.pending, filter.draft]);
+    setInvoices(items);
+  }
 
   useEffect(() => {
-    sessionStorage.setItem("invoices", JSON.stringify(invoices));
+    handleFilter()
+  }, [JSON.stringify(filter)]);
+
+  useEffect(() => {
+    sessionStorage.setItem("invoices", JSON.stringify(invoicesData));
+    handleFilter()
   }, [JSON.stringify(invoicesData)]);
 
   const handleSubmit = ({ values, items, e, id, draft }) => {
@@ -102,12 +100,10 @@ const InvoiceProvider = ({ children }) => {
         total: calcTotal(items),
       };
       setEditInvoice({});
-      setInvoices((prev) => [...copy]);
+      setInvoicesData((prev) => [...copy]);
     } else {
-      const totalValue = items.length
-        ? items.reduce((prev, next) => prev.total + next.total)
-        : 0;
-      setInvoices((prev) => [
+
+        setInvoicesData((prev) => [
         {
           id: id.toUpperCase(),
           createdAt: values.createdAt.toLocaleDateString(),
@@ -144,7 +140,7 @@ const InvoiceProvider = ({ children }) => {
         handleSubmit,
         invoices,
         filter,
-        setFilter
+        setFilter,
       }}
     >
       {children}
