@@ -36,17 +36,7 @@ const InvoiceProvider = ({ children }) => {
     return sum.toLocaleString();
   };
 
-  const handleFilter = (filtering) => {
-    if (filtering.length) {
-      setFilter((prev) => ({ ...prev, filtering }));
-    } else {
-      setFilter({
-        pending: false,
-        paid: false,
-        draft: false,
-      });
-    }
-  };
+
 
   const handleDelete = (id) => {
     setInvoices(invoices.filter((invoice) => invoice.id !== id));
@@ -153,7 +143,8 @@ const InvoiceProvider = ({ children }) => {
         setEditInvoice,
         handleSubmit,
         invoices,
-        handleFilter
+        filter,
+        setFilter
       }}
     >
       {children}
