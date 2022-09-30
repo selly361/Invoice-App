@@ -9,7 +9,7 @@ const StyledNavbar = styled.header`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 15vh;
+  height: 10vh;
   background-color: ${({ theme }) => theme.colors.bgHeader};
   display: flex;
   justify-content: space-between;

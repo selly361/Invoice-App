@@ -7,6 +7,8 @@ import iconCheckSvg from '../../assets/icons/icon-check.svg'
 const Wrap = styled.div`
   position: relative;
   height: 100%;
+  display: flex;
+  align-items: center;
 `;
 
 const DropDown = styled.div`
