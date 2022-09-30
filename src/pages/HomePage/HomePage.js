@@ -11,10 +11,10 @@ const Container = styled.div`
   width: 750px;
   min-height: 80vh;
   margin: auto;
+  padding: 8rem 0.3rem;
   display: flex;
   gap: 2rem;
   flex-flow: column;
-  position: relative;
 
   @media (max-width: 753px) {
     & {
@@ -28,9 +28,6 @@ const InvoiceHeader = styled.div`
   height: max-content;
   display: flex;
   justify-content: space-between;
-  position: absolute;
-  top: 8rem;
-  
 `;
 
 const StyledButton = styled.button`
