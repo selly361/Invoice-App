@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled, { ThemeContext } from "styled-components";
 import { ArrowDownIcon, CheckIcon } from "../../assets/icons";
-import iconCheckSvg from '../../assets/icons/icon-check.svg'
 
 
 const Wrap = styled.div`
@@ -42,7 +41,7 @@ const FilterTag = styled.h5`
   }
 `;
 
-const Filter = styled.h5`
+const Filter = styled.h3`
   color: ${({theme}) => theme.colors.textPrimary};
   display: flex;
   gap: 1rem;
@@ -50,11 +49,11 @@ const Filter = styled.h5`
 `
 
 const CheckBox = styled.div`
+  height: 20px;
+  width: 20px;
   background-color: ${({theme}) => theme.colors.bgFilter}; 
 
-  &.active {
-    background-image: url(${iconCheckSvg});
-  }
+  
 `
 
 const DropDownFilter = ({ setFilter, filter }) => {
@@ -70,13 +69,13 @@ const DropDownFilter = ({ setFilter, filter }) => {
       {open && (
         <DropDown>
           <DropDownSelector>
-            <Filter onClick={() => setFilter(prev => ({ ...prev, pending: !prev.paid }))}>Paid <CheckBox className={filter.paid ? "active" : ''} /></Filter>
+            <Filter onClick={() => setFilter(prev => ({ ...prev, paid: !filter.paid }))}>Paid <CheckBox>{filter.paid && <CheckIcon />}</CheckBox></Filter>
           </DropDownSelector>
           <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, pending: !prev.pending }))}>
-            <Filter>Pending <CheckBox className={filter.pending ?  "active" : ''} /></Filter>
+            <Filter>Pending <CheckBox>{filter.pending && <CheckIcon />}</CheckBox></Filter>
           </DropDownSelector>
           <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, draft: !prev.draft }))}>
-            <Filter>Draft <CheckBox className={filter.draft ?  "active" : ''} /></Filter>
+            <Filter>Draft <CheckBox>{filter.draft && <CheckIcon />}</CheckBox></Filter>
           </DropDownSelector>
         </DropDown>
       )}
