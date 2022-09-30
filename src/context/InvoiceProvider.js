@@ -9,7 +9,7 @@ export const InvoiceContextProvider = createContext({});
 
 const InvoiceProvider = ({ children }) => {
   const [invoicesData, setInvoicesData] = useState(
-    JSON.parse(localStorage.getItem("invoices")) || data
+    JSON.parse(sessionStorage.getItem("invoices")) || data
   );
   const [invoices, setInvoices] = useState(invoicesData);
   const [filter, setFilter] = useState({
@@ -77,8 +77,8 @@ const InvoiceProvider = ({ children }) => {
   }, [filter.paid, filter.pending, filter.draft);
 
   useEffect(() => {
-    localStorage.setItem("invoices", JSON.stringify(invoices));
-  }, [JSON.stringify(invoices)]);
+    sessionStorage.setItem("invoices", JSON.stringify(invoices));
+  }, [JSON.stringify(invoicesData)]);
 
   const handleSubmit = ({ values, items, e, id, draft }) => {
     e.preventDefault();
