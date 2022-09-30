@@ -70,13 +70,13 @@ const DropDownFilter = ({ setFilter, filter }) => {
       {open && (
         <DropDown>
           <DropDownSelector>
-            <Filter onClick={() => setFilter(prev => ({ ...prev, pending: !filter.paid }))}>Paid <CheckBox className={filter?.paid ? "active" : ''} /></Filter>
+            <Filter onClick={() => setFilter(prev => ({ ...prev, pending: !prev.paid }))}>Paid <CheckBox className={filter.paid ? "active" : ''} /></Filter>
           </DropDownSelector>
-          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, pending: !filter?.pending }))}>
-            <Filter>Pending <CheckBox className={filter?.pending ? "active" : ''} /></Filter>
+          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, pending: !prev.pending }))}>
+            <Filter>Pending <CheckBox className={filter.pending ?  "active" : ''} /></Filter>
           </DropDownSelector>
-          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, draft: !filter?.draft }))}>
-            <Filter>Draft <CheckBox className={filter?.draft ? "active" : ''} /></Filter>
+          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, draft: !prev.draft }))}>
+            <Filter>Draft <CheckBox className={filter.draft ?  "active" : ''} /></Filter>
           </DropDownSelector>
         </DropDown>
       )}
