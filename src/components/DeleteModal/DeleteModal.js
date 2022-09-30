@@ -19,7 +19,7 @@ const Modal = styled(motion.div)`
   justify-content: space-around;
 
   @media (max-width: 550px){
-    width: 80vw;
+    width: 90vw;
   }
 `;
 

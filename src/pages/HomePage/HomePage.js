@@ -80,8 +80,10 @@ const InvoiceLength = styled.p`
 const Wrap = styled.div`
   display: flex;
   align-items: center;
-  width: 40%;
+  width: 45%;
   justify-content: space-between;
+
+  
 `
 
 const Hide = styled.span`
@@ -98,6 +100,7 @@ const HomePage = () => {
   useEffect(() => {
     document.title = `Invoices (${invoices.length})`
   }, []);
+  
   return (
     <Container>
       <InvoiceHeader>

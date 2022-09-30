@@ -16,6 +16,10 @@ const Container = styled.main`
   display: flex;
   gap: 1rem;
   flex-flow: column;
+
+  @media (max-width: 750px) {
+    width: 90vw;
+  }
 `;
 
 const Button = styled.button`
@@ -79,6 +83,14 @@ const InvoiceHeader = styled.div`
   justify-content: space-between;
 `;
 
+const InvoiceDetailsContainer = styled.div`
+  background-color: ${({ theme }) => theme.colors.bgInvoiceItem};
+  width: 100%;
+  padding: 1.5rem;
+  min-height: 500px;
+  border-radius: 10px;
+`;
+
 const StatusContainer = styled.div`
   display: flex;
   gap: 1rem;
@@ -87,12 +99,40 @@ const StatusContainer = styled.div`
   h5 {
     color: ${({ theme }) => theme.colors.textSecondary};
   }
+
+  @media (max-width: 700px) {
+    justify-content: space-between;
+    width: 100%;
+  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
+const FooterButtons = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 80px;
+  background-color: ${({ theme }) => theme.colors.bgInvoiceItem};
+  display: none;
+  margin: auto;
+  left: 0;
+  right: 0;
+
+  @media (max-width: 700px) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+  }
 `;
 
 export default function InvoicePage() {
@@ -112,6 +152,22 @@ export default function InvoicePage() {
   useEffect(() => {
     document.title = `Invoices | #${id}`;
   }, []);
+
+  let buttons = (
+    <>
+      {selectedInvoice?.status === "Pending" ||
+      selectedInvoice?.status === "Draft" ? (
+        <EditButton onClick={() => handleEdit(id)}>Edit</EditButton>
+      ) : null}
+      <DeleteButton onClick={() => setToggleDelete(true)}>Delete</DeleteButton>
+      {selectedInvoice?.status == "Pending" ? (
+        <MarkPaidButton onClick={() => handleMarkPaid(id)}>
+          Mark as Paid
+        </MarkPaidButton>
+      ) : null}
+    </>
+  );
+
   return (
     <Container>
       <Link to="/">
@@ -125,22 +181,21 @@ export default function InvoicePage() {
           <h5>Status </h5>
           <Status status={selectedInvoice?.status} />
         </StatusContainer>
-        <ButtonContainer>
-          {selectedInvoice?.status === "Pending" ||
-          selectedInvoice?.status === "Draft" ? (
-            <EditButton onClick={() => handleEdit(id)}>Edit</EditButton>
-          ) : null}
-          <DeleteButton onClick={() => setToggleDelete(true)}>
-            Delete
-          </DeleteButton>
-          {selectedInvoice?.status == "Pending" ? (
-            <MarkPaidButton onClick={() => handleMarkPaid(id)}>
-              Mark as Paid
-            </MarkPaidButton>
-          ) : null}
-        </ButtonContainer>
+        <ButtonContainer>{buttons}</ButtonContainer>
       </InvoiceHeader>
-      <AnimatePresence>{toggleDelete && <DeleteModal setToggleDelete={setToggleDelete} id={id} handleDelete={handleDelete} />}</AnimatePresence>
+      <InvoiceDetailsContainer>
+        
+      </InvoiceDetailsContainer>
+      <AnimatePresence>
+        {toggleDelete && (
+          <DeleteModal
+            setToggleDelete={setToggleDelete}
+            id={id}
+            handleDelete={handleDelete}
+          />
+        )}
+      </AnimatePresence>
+      <FooterButtons>{buttons}</FooterButtons>
     </Container>
   );
 }

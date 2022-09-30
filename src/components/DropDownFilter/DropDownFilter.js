@@ -30,8 +30,8 @@ const FilterTag = styled.h5`
   color: ${({ theme }) => theme.colors.textPrimary};
   cursor: pointer;
   display: flex;
-  gap: .4rem;
-
+  gap: .7rem;
+  align-items: center;
   
   svg {
     transition: 1s transform ease;
