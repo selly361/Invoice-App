@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled, { ThemeContext } from "styled-components";
-import { ArrowDownIcon } from "../../assets/icons";
+import { ArrowDownIcon, CheckIcon } from "../../assets/icons";
+import iconCheckSvg from '../../assets/icons/icon-check.svg'
+
 
 const Wrap = styled.div`
   position: relative;
@@ -11,7 +13,7 @@ const DropDown = styled.div`
   position: absolute;
   width: 200px;
   height: 150px;
- background-color: ${({theme}) => theme.colors.bgFilterBox};
+ background-color: ${({ theme }) => theme.colors.bgFilterBox};
  transform: translate(-25%);
  bottom: -150px;
 `;
@@ -20,7 +22,7 @@ const DropDownSelector = styled.h5``;
 
 const FilterTag = styled.h5`
 
- color: ${({theme}) => theme.colors.textPrimary};
+ color: ${({ theme }) => theme.colors.textPrimary};
 
   svg {
     transition: 1s transform ease;
@@ -32,6 +34,18 @@ const FilterTag = styled.h5`
     }
   }
 `;
+
+const Filter = styled.h5`
+  color: ${({theme}) => theme.colors.textPrimary};
+`
+
+const CheckBox = styled.div`
+  background-color: ${({theme}) => theme.colors.bgFilter}; 
+
+  &.active {
+    background-image: url(${iconCheckSvg});
+  }
+`
 
 const DropDownFilter = ({ setFilter, filter }) => {
   const [open, setOpen] = useState(false);
@@ -45,9 +59,15 @@ const DropDownFilter = ({ setFilter, filter }) => {
       </FilterTag>
       {open && (
         <DropDown>
-          <DropDownSelector></DropDownSelector>
-          <DropDownSelector></DropDownSelector>
-          <DropDownSelector></DropDownSelector>
+          <DropDownSelector>
+            <Filter onClick={() => setFilter(prev => ({ ...prev, pending: !filter.paid }))}>Paid <CheckBox className={filter.paid ? "active" : ''} /></Filter>
+          </DropDownSelector>
+          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, pending: !filter.pending }))}>
+            <Filter>Pending <CheckBox className={filter.pending ? "active" : ''} /></Filter>
+          </DropDownSelector>
+          <DropDownSelector onClick={() => setFilter(prev => ({ ...prev, draft: !filter.draft }))}>
+            <Filter>Draft <CheckBox className={filter.draft ? "active" : ''} /></Filter>
+          </DropDownSelector>
         </DropDown>
       )}
     </Wrap>
