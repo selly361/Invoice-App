@@ -86,7 +86,7 @@ const Form = () => {
   let draft = true;
   return (
     <Container>
-      <Title>New Invoice</Title>
+      <Title>{editInvoice.edit ? `Edit ${editInvoice.invoice.id}` : "New Invoice"}</Title>
       <StyledForm onSubmit={(e) => handleSubmit({ values: form.values, items, e, id: uid() })} id="add-invoice-form">
         <SenderAddressSection>
           <BillText>Bill from</BillText>

@@ -35,12 +35,12 @@ const Wrapper = ({ children }) => {
   };
 
   useEffect(() => {
-    if(toggleForm || toggleDelete){
+    if(toggleForm || toggleDelete || editInvoice.edit){
       document.body.style.overflow = "hidden"
     } else {
       document.body.style.overflow = ""
     }
-  }, [toggleDelete, toggleForm])
+  }, [toggleDelete, toggleForm, editInvoice.edit])
 
   return (
     <ThemeProvider theme={themeData.theme === "dark" ? dark : light}>

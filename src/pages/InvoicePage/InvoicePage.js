@@ -34,7 +34,7 @@ const EditButton = styled(Button)`
 
 const DeleteButton = styled(Button)`
   background-color: ${({ theme }) => theme.colors.btnDelete};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.white};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.btnDeleteHover};

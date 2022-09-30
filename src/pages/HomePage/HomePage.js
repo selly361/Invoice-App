@@ -4,6 +4,8 @@ import { InvoiceContextProvider } from "../../context/InvoiceProvider";
 import { PlusIcon } from "../../assets/icons";
 import styled from "styled-components";
 import InvoicesItem from "../../components/Invoices/InvoiceItems/InvoicesItem";
+import { CheckIcon } from "@mantine/core";
+import DropDownFilter from "../../components/DropDownFilter/DropDownFilter";
 
 const Container = styled.div`
   width: 750px;
@@ -66,8 +68,14 @@ const InvoiceLength = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
+const Wrap = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`
+
 const HomePage = () => {
-  const { setToggleForm, invoices, setEditInvoice } = useContext(InvoiceContextProvider);
+  const { setToggleForm, invoices, setEditInvoice, setFilter, filter } = useContext(InvoiceContextProvider);
 
   useEffect(() => {
     document.title = `Invoices (${invoices.length})`
@@ -83,7 +91,8 @@ const HomePage = () => {
               : "No Invoices"}
           </InvoiceLength>
         </InvoiceDetailWrapper>
-        <div>
+        <Wrap>
+        <DropDownFilter setFilter={setFilter} filter={filter} />
           <StyledButton onClick={() =>{
              setToggleForm(true)
              setEditInvoice({})
@@ -93,7 +102,7 @@ const HomePage = () => {
             </IconWrapper>
             New Invoice
           </StyledButton>
-        </div>
+        </Wrap>
       </InvoiceHeader>
       <InvoicesItem invoices={invoices} />
     </Container>

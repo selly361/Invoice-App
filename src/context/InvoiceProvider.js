@@ -12,6 +12,11 @@ const InvoiceProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("invoices")) || data
   );
   const [invoices, setInvoices] = useState(invoicesData);
+  const [filter, setFilter] = useState({
+    pending: false,
+    paid: false,
+    draft: false,
+  });
 
   const [toggleForm, setToggleForm] = useState(false);
   const [toggleDelete, setToggleDelete] = useState(false);
@@ -21,16 +26,23 @@ const InvoiceProvider = ({ children }) => {
     invoice: {},
   });
 
-
   const calcTotal = (arr) => {
     let sum = 0;
 
-    for(let a of arr){
-      sum += +a.total
+    for (let a of arr) {
+      sum += +a.total;
     }
 
-    return sum.toLocaleString()
-  }
+    return sum.toLocaleString();
+  };
+
+  const handleFilter = (filtering) => {
+    if (filtering.length) {
+      setFilter((prev) => ({ ...prev, filtering }));
+    } else {
+      setFilter({});
+    }
+  };
 
   const handleDelete = (id) => {
     setInvoices(invoices.filter((invoice) => invoice.id !== id));
@@ -48,6 +60,28 @@ const InvoiceProvider = ({ children }) => {
     setEditInvoice((prev) => ({ ...prev, edit: true, id, invoice }));
   };
 
+
+
+  useEffect(() => {
+    let filtered = invoices;
+    const filterInvoice = (status, invoiceArr) =>
+      invoiceArr.filter((invoice) => invoice.status === status);
+
+    if (filter.paid) {
+      filtered = filterInvoice("Paid", filtered);
+    } else if (filter.pending) {
+      filtered = filterInvoice("Pending", filtered);
+    } else if (filter.draft) {
+      filtered = filterInvoice("Draft", filtered);
+    } else {
+      filtered = invoicesData;
+    }
+
+
+
+    setInvoices(filtered);
+  }, [filter]);
+
   useEffect(() => {
     localStorage.setItem("invoices", JSON.stringify(invoices));
   }, [JSON.stringify(invoices)]);
@@ -59,8 +93,7 @@ const InvoiceProvider = ({ children }) => {
       let copy = invoices;
       let index = copy.findIndex((item) => item.id === editInvoice.id);
 
-
-        copy[index] = {
+      copy[index] = {
         id: editInvoice.id,
         createdAt: values.createdAt.toLocaleDateString(),
         paymentDue: values.paymentDue.toLocaleDateString(),
@@ -75,9 +108,11 @@ const InvoiceProvider = ({ children }) => {
         total: calcTotal(items),
       };
       setEditInvoice({});
-      setInvoices(prev => ([...copy]));
+      setInvoices((prev) => [...copy]);
     } else {
-      const totalValue = items.length ? items.reduce((prev, next) => prev.total + next.total) : 0;
+      const totalValue = items.length
+        ? items.reduce((prev, next) => prev.total + next.total)
+        : 0;
       setInvoices((prev) => [
         {
           id: id.toUpperCase(),
@@ -114,6 +149,7 @@ const InvoiceProvider = ({ children }) => {
         setEditInvoice,
         handleSubmit,
         invoices,
+        handleFilter
       }}
     >
       {children}
