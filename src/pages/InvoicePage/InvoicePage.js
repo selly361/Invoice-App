@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { ArrowLeftIcon } from "../../assets/icons";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { InvoiceContextProvider } from "../../context/InvoiceProvider";
+import InvoiceInfo from "./InvoiceInfo/InvoiceInfo";
 import InvoiceItem from "../../components/Invoices/InvoiceItem/InvoiceItem";
 import Status from "../../components/shared/Status/Status";
 import styled from "styled-components";
@@ -117,16 +118,16 @@ const ButtonContainer = styled.div`
 `;
 
 const FooterButtons = styled.div`
-  position: absolute;
-  bottom: 0;
+  position: fixed;
   width: 100vw;
   height: 80px;
   background-color: ${({ theme }) => theme.colors.bgInvoiceItem};
   display: none;
   margin: auto;
+  bottom: 0;
   left: 0;
   right: 0;
-
+  
   @media (max-width: 700px) {
     display: flex;
     align-items: center;
@@ -184,7 +185,7 @@ export default function InvoicePage() {
         <ButtonContainer>{buttons}</ButtonContainer>
       </InvoiceHeader>
       <InvoiceDetailsContainer>
-        
+        <InvoiceInfo invoice={selectedInvoice} />
       </InvoiceDetailsContainer>
       <AnimatePresence>
         {toggleDelete && (

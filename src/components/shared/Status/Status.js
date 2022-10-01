@@ -1,12 +1,11 @@
-import styled from "styled-components";
-
 import React from "react";
+import styled from "styled-components";
 
 const Circle = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-
+  transition: none;
 
   &.Paid {
     background-color: ${({ theme }) => theme.colors.statusPaid};

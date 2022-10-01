@@ -17,6 +17,10 @@ const StyledWrapper = styled.main`
   align-items: center;
   justify-content: center;
   padding: 2rem 0;
+
+  @media (max-width: 700px){
+    padding-bottom: 8rem;
+  }
 `;
 
 const Wrapper = ({ children }) => {
