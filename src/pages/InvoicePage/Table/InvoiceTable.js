@@ -95,14 +95,6 @@ const InvoiceTable = ({ invoice }) => {
   return (
     <StyledInvoiceTable>
       <Container>
-        {isDesktop && (
-          <Head>
-            <Heading>Item Name</Heading>
-            <Heading $jsCenter>QTY.</Heading>
-            <Heading $jsEnd>Price</Heading>
-            <Heading $jsEnd>Total</Heading>
-          </Head>
-        )}
         {invoice.items.map((item, index) => (
           <Item key={index}>
             <ItemName>{item.name}</ItemName>
